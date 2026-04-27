@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="id" oncontextmenu="return false" onselectstart="return false">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+    <title>TES KECERMATAN BW - Persona Research</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --navy: #000000; /* Diubah jadi hitam pekat */
+            --gold: #ffffff; 
+            --gray: #f1f1f1;
+            --danger: #000000;
+            --btn-shadow: #cccccc;
+        }
+        
+        /* Efek Hitam Putih Global */
+        body { 
+            -webkit-user-select: none; 
+            user-select: none; 
+            margin:0; 
+            font-family:'Inter',sans-serif; 
+            background:#ffffff; 
+            display:flex; 
+            justify-content:center; 
+            min-height:100vh; 
+            color:#000; 
+            /* Memastikan semua konten jadi grayscale */
+            filter: grayscale(100%);
+        }
+
+        .wrap {
+            width:100%; max-width:980px; background:#fff; 
+            border-top:8px solid #000; border-radius:0; 
+            min-height: 95vh; padding:15px; box-sizing:border-box; 
+            display:flex; flex-direction:column; margin: 0 auto;
+        }
+
+        header { border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:10px; text-align:center }
+        
+        #topRow {
+            display:none; flex-direction: row; justify-content: space-between; 
+            align-items: center; background: #fff; border: 2px solid #000;
+            padding: 8px 25px; margin: 5px auto; width: 90%; max-width: 500px;
+        }
+
+        .timer-box { font-size: 28px; font-weight: 900; color: #000; font-family: monospace; }
+
+        #testArea { flex-grow:1; display:none; text-align:center; flex-direction: column; justify-content: space-evenly; }
+
+        /* Tabel Acuan Kotak-Kotak Hitam Putih */
+        .acuan { width:100%; border-collapse:collapse; table-layout:fixed; margin:0 auto; max-width:700px; }
+        .acuan td { border:2px solid #000; height:70px; text-align:center; font-size:40px; font-weight:900; background:#fff; color:#000; }
+        .acuan td.label { background:#000; font-size:18px; height:30px; color:#fff; }
+
+        .soal-text { 
+            font-size:55px; font-weight:900; letter-spacing:15px; 
+            background:#fff; padding:20px; border-radius:0; 
+            display:inline-block; border:3px dashed #000; margin: 20px 0; 
+        }
+
+        .pilihan-container { display:flex; justify-content: center; gap:12px; padding-bottom: 20px; }
+        
+        .pilihan-btn { 
+            width:85px; height:85px; font-size:35px; font-weight:800; 
+            color:#000; background:#fff; border:3px solid #000; 
+            cursor: pointer; transition: all 0.1s; 
+        }
+        .pilihan-btn:active { background: #000; color: #fff; }
+
+        #hasilArea { display:none; padding: 10px 0; filter: none !important; }
+        .card-skor { border: 2px solid #000; border-radius: 0; padding: 15px; }
+        .val-skor { font-size: 30px; font-weight: 900; }
+        
+        table.hasil { width: 100%; border-collapse: collapse; border: 2px solid #000; }
+        table.hasil th, table.hasil td { border: 1px solid #000; padding: 8px; text-align: center; }
+        
+        .btn-pdf { background: #000; color: #fff; padding: 20px; border: none; width: 100%; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 20px; }
+        
+        #loginBox input { border: 2px solid #000; border-radius: 0; padding: 15px; width: 80%; font-size: 20px; }
+        .btn-start { background: #000; color: #fff; padding: 15px 50px; border: none; font-weight: 800; cursor: pointer; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="wrap" id="captureArea">
+        <div id="prepOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:1000; flex-direction:column; justify-content:center; align-items:center;">
+            <div id="countdownText" style="font-size:120px; font-weight:900;">3</div>
+        </div>
+
+        <header>
+            <h1 style="font-size: 20px; letter-spacing: 2px;">SIMULASI TES KECERMATAN (BLACK & WHITE)</h1>
+            <div id="topRow">
+                <div id="kolomInfo" style="font-weight: bold;">KOLOM: 1 / 10</div>
+                <div class="timer-box" id="timer">00:60</div>
+            </div>
+        </header>
+
+        <div id="loginBox" style="text-align:center; padding:50px 0;">
+            <h2 style="margin-bottom:20px;">INPUT DATA PESERTA</h2>
+            <input id="username" type="text" placeholder="NAMA LENGKAP..." autocomplete="off" />
+            <br><br>
+            <button class="btn-start" onclick="startLogin()">MULAI UJIAN</button>
+        </div>
+
+        <div id="testArea">
+            <table class="acuan" id="acuanTable"></table>
+            <div><div id="soal" class="soal-text">---</div></div>
+            <div id="pilihan" class="pilihan-container"></div>
+        </div>
+
+        <div id="hasilArea">
+            <h2 style="text-align:center;">HASIL EVALUASI KECERMATAN</h2>
+            <div id="namaHasil" style="text-align:center; font-size:24px; font-weight:900; margin-bottom:20px; text-decoration: underline;"></div>
+            <div id="summaryBox" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;"></div>
+            <table class="hasil">
+                <thead><tr><th>KOLOM</th><th>TERJAWAB</th><th>BENAR</th><th>SALAH</th></tr></thead>
+                <tbody id="tbodyHasil"></tbody>
+            </table>
+            <button class="btn-pdf" onclick="downloadFullPDF()">CETAK LAPORAN PDF</button>
+        </div>
+
+        <footer style="margin-top:auto; text-align:center; padding:20px; font-size:12px; border-top:1px solid #000;">
+            PERSONA RESEARCH & CONSULTING - VERSI HITAM PUTIH
+        </footer>
+    </div>
+
+<script>
+    // Bank soal menggunakan simbol Unicode yang terlihat tegas saat hitam putih
+    const BANK_STR = [
+        "♜♞♝♛♚", "⚀⚁⚂⚃⚄", "▲▼◀▶◆", "♠♣♥♦★", "☀☁☂☃☄",
+        "ⒶⒷⒸⒹⒺ", "✕○△□✚", "$O✂✈✉", "X∯∰∱∲", "0(#>&"
+    ];
+
+    let currentIdx = 0, timerLeft = 60, interval = null, results = [], username = "", activeString = "";
+
+    function startLogin() {
+        const u = document.getElementById('username').value.trim();
+        if(!u) return alert('Nama wajib diisi!');
+        username = u;
+        document.getElementById('loginBox').style.display = 'none';
+        triggerCountdown();
+    }
+
+    function triggerCountdown() {
+        const overlay = document.getElementById('prepOverlay');
+        const countText = document.getElementById('countdownText');
+        overlay.style.display = 'flex';
+        let count = 3; countText.textContent = count;
+        let t = setInterval(() => {
+            count--; 
+            if(count > 0) countText.textContent = count;
+            else { clearInterval(t); overlay.style.display = 'none'; startCol(); }
+        }, 1000);
+    }
+
+    function startCol() {
+        timerLeft = 60;
+        document.getElementById('topRow').style.display = 'flex';
+        document.getElementById('testArea').style.display = 'flex';
+        document.getElementById('kolomInfo').textContent = `KOLOM: ${currentIdx + 1} / 10`;
+        if(!results[currentIdx]) results.push({t:0, b:0, s:0});
+        
+        activeString = Array.from(BANK_STR[currentIdx]).sort(()=>Math.random()-0.5).slice(0,5).join('');
+        
+        renderAcuan(activeString);
+        nextSoal();
+        interval = setInterval(() => {
+            timerLeft--;
+            document.getElementById('timer').textContent = `00:${String(timerLeft).padStart(2,'0')}`;
+            if(timerLeft <= 0) {
+                clearInterval(interval);
+                currentIdx++;
+                if(currentIdx < 10) triggerCountdown(); else showFinal();
+            }
+        }, 1000);
+    }
+
+    function renderAcuan(str) {
+        let h1 = '<tr>', h2 = '<tr>';
+        const chars = Array.from(str);
+        for (let i = 0; i < 5; i++) {
+            h1 += `<td>${chars[i]}</td>`; 
+            h2 += `<td class="label">${String.fromCharCode(65+i)}</td>`; 
+        }
+        document.getElementById('acuanTable').innerHTML = h1+'</tr>'+h2+'</tr>';
+    }
+
+    function nextSoal() {
+        const chars = Array.from(activeString);
+        const mIdx = Math.floor(Math.random()*5);
+        const correctLabel = String.fromCharCode(65+mIdx);
+        const display = chars.filter((_,i) => i !== mIdx).sort(()=>Math.random()-0.5);
+        document.getElementById('soal').textContent = display.join(' ');
+        
+        const cont = document.getElementById('pilihan');
+        cont.innerHTML = '';
+        ['A','B','C','D','E'].forEach(l => {
+            const btn = document.createElement('button');
+            btn.className = 'pilihan-btn'; btn.textContent = l;
+            btn.onclick = () => { 
+                results[currentIdx].t++; 
+                if(l === correctLabel) results[currentIdx].b++; else results[currentIdx].s++; 
+                nextSoal(); 
+            };
+            cont.appendChild(btn);
+        });
+    }
+
+    function showFinal() {
+        document.getElementById('testArea').style.display = 'none';
+        document.getElementById('topRow').style.display = 'none';
+        document.getElementById('hasilArea').style.display = 'block';
+        document.getElementById('namaHasil').textContent = username;
+        
+        const totalB = results.reduce((a,b)=>a+b.b,0);
+        const totalS = results.reduce((a,b)=>a+b.s,0);
+
+        document.getElementById('summaryBox').innerHTML = `
+            <div class="card-skor"><b>TOTAL BENAR</b><br><span class="val-skor">${totalB}</span></div>
+            <div class="card-skor"><b>TOTAL SALAH</b><br><span class="val-skor">${totalS}</span></div>
+        `;
+
+        let h = '';
+        results.forEach((r, i) => { 
+            h += `<tr><td>${i+1}</td><td>${r.t}</td><td>${r.b}</td><td>${r.s}</td></tr>`; 
+        });
+        document.getElementById('tbodyHasil').innerHTML = h;
+    }
+
+    async function downloadFullPDF() {
+        const element = document.getElementById('captureArea');
+        const canvas = await html2canvas(element, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
+        pdf.save(`Hasil_Kecermatan_${username}.pdf`);
+    }
+</script>
+</body>
+</html>
