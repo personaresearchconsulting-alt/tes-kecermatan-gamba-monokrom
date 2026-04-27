@@ -3,105 +3,62 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
-    <title>TES KECERMATAN BW - Persona Research</title>
+    <title>TES KECERMATAN - Persona Research & Consulting</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
-        :root {
-            --navy: #000000; /* Diubah jadi hitam pekat */
-            --gold: #ffffff; 
-            --gray: #f1f1f1;
-            --danger: #000000;
-            --btn-shadow: #cccccc;
-        }
-        
-        /* Efek Hitam Putih Global */
-        body { 
-            -webkit-user-select: none; 
-            user-select: none; 
-            margin:0; 
-            font-family:'Inter',sans-serif; 
-            background:#ffffff; 
-            display:flex; 
-            justify-content:center; 
-            min-height:100vh; 
-            color:#000; 
-            /* Memastikan semua konten jadi grayscale */
-            filter: grayscale(100%);
-        }
-
-        .wrap {
-            width:100%; max-width:980px; background:#fff; 
-            border-top:8px solid #000; border-radius:0; 
-            min-height: 95vh; padding:15px; box-sizing:border-box; 
-            display:flex; flex-direction:column; margin: 0 auto;
-        }
-
-        header { border-bottom:2px solid #000; padding-bottom:10px; margin-bottom:10px; text-align:center }
-        
-        #topRow {
-            display:none; flex-direction: row; justify-content: space-between; 
-            align-items: center; background: #fff; border: 2px solid #000;
-            padding: 8px 25px; margin: 5px auto; width: 90%; max-width: 500px;
-        }
-
-        .timer-box { font-size: 28px; font-weight: 900; color: #000; font-family: monospace; }
-
-        #testArea { flex-grow:1; display:none; text-align:center; flex-direction: column; justify-content: space-evenly; }
-
-        /* Tabel Acuan Kotak-Kotak Hitam Putih */
-        .acuan { width:100%; border-collapse:collapse; table-layout:fixed; margin:0 auto; max-width:700px; }
-        .acuan td { border:2px solid #000; height:70px; text-align:center; font-size:40px; font-weight:900; background:#fff; color:#000; }
-        .acuan td.label { background:#000; font-size:18px; height:30px; color:#fff; }
-
-        .soal-text { 
-            font-size:55px; font-weight:900; letter-spacing:15px; 
-            background:#fff; padding:20px; border-radius:0; 
-            display:inline-block; border:3px dashed #000; margin: 20px 0; 
-        }
-
-        .pilihan-container { display:flex; justify-content: center; gap:12px; padding-bottom: 20px; }
-        
-        .pilihan-btn { 
-            width:85px; height:85px; font-size:35px; font-weight:800; 
-            color:#000; background:#fff; border:3px solid #000; 
-            cursor: pointer; transition: all 0.1s; 
-        }
-        .pilihan-btn:active { background: #000; color: #fff; }
-
-        #hasilArea { display:none; padding: 10px 0; filter: none !important; }
-        .card-skor { border: 2px solid #000; border-radius: 0; padding: 15px; }
-        .val-skor { font-size: 30px; font-weight: 900; }
-        
-        table.hasil { width: 100%; border-collapse: collapse; border: 2px solid #000; }
-        table.hasil th, table.hasil td { border: 1px solid #000; padding: 8px; text-align: center; }
-        
-        .btn-pdf { background: #000; color: #fff; padding: 20px; border: none; width: 100%; font-weight: bold; cursor: pointer; font-size: 18px; margin-top: 20px; }
-        
-        #loginBox input { border: 2px solid #000; border-radius: 0; padding: 15px; width: 80%; font-size: 20px; }
-        .btn-start { background: #000; color: #fff; padding: 15px 50px; border: none; font-weight: 800; cursor: pointer; margin-top: 10px; }
+        :root{--navy:#0b2340;--gold:#d4a017;--gray:#f1f5f9;--danger:#c0392b;--btn-shadow: #cbd5e1;}
+        body { -webkit-user-select: none; user-select: none; margin:0; font-family:'Inter',sans-serif; background:#e2e8f0; display:flex; justify-content:center; min-height:100vh; color:#071130; }
+        .wrap{width:100%; max-width:980px; background:#fff; border-top:6px solid var(--navy); border-radius:12px; min-height: 95vh; padding:15px; box-sizing:border-box; box-shadow:0 10px 30px rgba(0,0,0,0.1); display:flex; flex-direction:column; margin: 10px auto;}
+        header{border-bottom:1px solid var(--gray); padding-bottom:10px; margin-bottom:10px; text-align:center}
+        #topRow{display:none; flex-direction: row; justify-content: space-between; align-items: center; background: var(--gray); padding: 8px 25px; border-radius: 30px; margin: 5px auto; width: 90%; max-width: 500px;}
+        .timer-box{font-size: 24px; font-weight: 900; color: var(--danger); font-family: monospace;}
+        #testArea{flex-grow:1; display:none; text-align:center; flex-direction: column; justify-content: space-evenly;}
+        .acuan{width:100%; border-collapse:collapse; table-layout:fixed; margin:0 auto; max-width:700px;}
+        .acuan td{border:2px solid #cbd5e1; height:60px; text-align:center; font-size:35px; font-weight:900; background:#fff; color:var(--navy)}
+        .acuan td.label{background:var(--navy); font-size:15px; height:25px; color:#fff;}
+        .soal-text{font-size:60px; font-weight:900; letter-spacing:10px; background:#f8fafc; padding:15px; border-radius:15px; display:inline-block; border:2px solid var(--gray); white-space: nowrap; margin: 15px 0;}
+        .pilihan-container{display:flex; justify-content: center; gap:15px; padding-bottom: 20px;}
+        .pilihan-btn { width:80px; height:80px; font-size:32px; font-weight:800; color:var(--navy); background:#fff; border:2px solid #cbd5e1; border-radius:12px; cursor: pointer; position: relative; outline: none; transition: all 0.1s ease; box-shadow: 0 6px 0 var(--btn-shadow), 0 8px 15px rgba(0,0,0,0.1); }
+        .pilihan-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--btn-shadow); }
+        #hasilArea{display:none; padding: 10px 0;}
+        .summary-cards{display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; margin:10px 0;}
+        .card-skor{background:#fff; padding:10px; border-radius:8px; text-align:center; border:1px solid #e2e8f0; display: flex; flex-direction: column; justify-content: center;}
+        .card-skor b { color: #64748b; text-transform: uppercase; font-size: 10px; margin-bottom: 2px;}
+        .val-skor { font-size: 24px; font-weight: 900; color: var(--navy); line-height: 1;}
+        .kat-badge { display:inline-block; padding: 3px 8px; border-radius: 15px; font-size: 9px; font-weight: bold; margin-top: 5px; text-transform: uppercase;}
+        .card-akhir { grid-column: span 2; background: var(--navy) !important; color: white !important; padding: 12px; margin-top: 5px;}
+        .card-akhir b { color: rgba(255,255,255,0.7); font-size: 11px;}
+        .card-akhir .val-skor { font-size: 38px; color: white; }
+        .kesimpulan-box { background: #f8fafc; border-radius: 10px; padding: 15px; margin: 15px 0; border: 1px solid #e2e8f0; font-size: 14px;}
+        table.hasil { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px;}
+        table.hasil th { background: #f1f5f9; padding: 8px; border: 1px solid #cbd5e1; }
+        table.hasil td { border: 1px solid #cbd5e1; padding: 6px; text-align: center; }
+        .btn-pdf { background: #27ae60; color: white; padding: 18px; border: none; border-radius: 8px; width: 100%; font-weight: bold; cursor: pointer; margin: 20px 0; font-size: 16px; text-transform: uppercase;}
+        .admin-trigger { cursor: pointer; color: #64748b; opacity: 0.4; font-size: 10px; display: inline-block; margin-left: 3px; }
+        .bg-sukses { background: #dcfce7; color: #166534; }
+        .bg-bahaya { background: #fee2e2; color: #991b1b; }
+        .bg-warning { background: #fef9c3; color: #854d0e; }
+        .permanent-footer { margin-top: auto; padding-top: 15px; text-align: center; font-size: 11px; color: #64748b; border-top: 1px solid var(--gray); }
+        #prepOverlay { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background: #fff; z-index: 1000; flex-direction: column; justify-content: center; align-items: center; }
+        #loginBox{text-align:center; padding:40px 0;}
+        input{width:100%; max-width:280px; padding:12px; margin:10px auto; border:2px solid #cbd5e1; border-radius:6px; font-size:16px; text-align:center;}
+        .btn-start{background:var(--navy); color:var(--gold); padding:12px 45px; border:none; border-radius:6px; font-weight:800; cursor:pointer;}
     </style>
 </head>
 <body>
     <div class="wrap" id="captureArea">
-        <div id="prepOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#fff; z-index:1000; flex-direction:column; justify-content:center; align-items:center;">
-            <div id="countdownText" style="font-size:120px; font-weight:900;">3</div>
-        </div>
-
+        <div id="prepOverlay"><div id="countdownText" style="font-size:100px; font-weight:900; color:var(--navy)">3</div></div>
         <header>
-            <h1 style="font-size: 20px; letter-spacing: 2px;">SIMULASI TES KECERMATAN (BLACK & WHITE)</h1>
-            <div id="topRow">
-                <div id="kolomInfo" style="font-weight: bold;">KOLOM: 1 / 10</div>
-                <div class="timer-box" id="timer">00:60</div>
-            </div>
+            <div class="title-area"><h1 style="font-size: 16px;">TES KECERMATAN</h1></div>
+            <div id="topRow"><div id="kolomInfo">KOLOM: 1 / 10</div><div class="timer-box" id="timer">00:60</div></div>
         </header>
 
-        <div id="loginBox" style="text-align:center; padding:50px 0;">
-            <h2 style="margin-bottom:20px;">INPUT DATA PESERTA</h2>
-            <input id="username" type="text" placeholder="NAMA LENGKAP..." autocomplete="off" />
-            <br><br>
-            <button class="btn-start" onclick="startLogin()">MULAI UJIAN</button>
+        <div id="loginBox">
+            <h3>LOGIN PESERTA</h3>
+            <input id="username" type="text" placeholder="Nama" autocomplete="off" />
+            <br><button class="btn-start" onclick="startLogin()">MULAI TES</button>
         </div>
 
         <div id="testArea">
@@ -111,28 +68,33 @@
         </div>
 
         <div id="hasilArea">
-            <h2 style="text-align:center;">HASIL EVALUASI KECERMATAN</h2>
-            <div id="namaHasil" style="text-align:center; font-size:24px; font-weight:900; margin-bottom:20px; text-decoration: underline;"></div>
-            <div id="summaryBox" style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:20px;"></div>
+            <h2 style="text-align:center; font-size: 18px; margin-bottom: 5px;">HASIL TES GAMBAR HILANG</h2>
+            <div id="namaHasil" style="text-align:center;font-weight:900;font-size:22px;color:var(--navy);margin-bottom:10px;text-transform: uppercase; border-bottom: 2px solid var(--navy); padding-bottom: 5px;"></div>
+            <div id="summaryBox" class="summary-cards"></div>
+            <div class="kesimpulan-box">
+                <b style="color:var(--navy)">KESIMPULAN:</b>
+                <div id="kesimpulanNarasi" style="margin-top:5px; line-height: 1.5; font-size: 13px;"></div>
+            </div>
             <table class="hasil">
-                <thead><tr><th>KOLOM</th><th>TERJAWAB</th><th>BENAR</th><th>SALAH</th></tr></thead>
+                <thead><tr><th>KOLOM</th><th>TERJAWAB</th><th>BENAR</th><th>SALAH</th><th>SELISIH</th></tr></thead>
                 <tbody id="tbodyHasil"></tbody>
             </table>
-            <button class="btn-pdf" onclick="downloadFullPDF()">CETAK LAPORAN PDF</button>
+            <div style="margin-top:20px; border:1px solid #e2e8f0; padding:10px; border-radius:8px; background: white;">
+                <canvas id="chartPauli" height="130"></canvas>
+            </div>
+            <button class="btn-pdf" id="btnDownload" onclick="downloadFullPDF()">📥 DOWNLOAD LAPORAN (PDF)</button>
         </div>
 
-        <footer style="margin-top:auto; text-align:center; padding:20px; font-size:12px; border-top:1px solid #000;">
-            PERSONA RESEARCH & CONSULTING - VERSI HITAM PUTIH
+        <footer class="permanent-footer">
+            <b>Persona Research & Consulting</b> | WA: 0877 4251 5786<span class="admin-trigger" onclick="bypassToResult()">v</span>
         </footer>
     </div>
 
 <script>
-    // Bank soal menggunakan simbol Unicode yang terlihat tegas saat hitam putih
     const BANK_STR = [
         "♜♞♝♛♚", "⚀⚁⚂⚃⚄", "▲▼◀▶◆", "♠♣♥♦★", "☀☁☂☃☄",
         "ⒶⒷⒸⒹⒺ", "✕○△□✚", "$O✂✈✉", "X∯∰∱∲", "0(#>&"
     ];
-
     let currentIdx = 0, timerLeft = 60, interval = null, results = [], username = "", activeString = "";
 
     function startLogin() {
@@ -141,6 +103,13 @@
         username = u;
         document.getElementById('loginBox').style.display = 'none';
         triggerCountdown();
+    }
+
+    function bypassToResult() {
+        username = "ADMIN SIMULASI";
+        results = Array(10).fill(null).map(() => ({ t: Math.floor(Math.random()*10)+30, b: 28, s: 2 }));
+        document.getElementById('loginBox').style.display = 'none';
+        showFinal();
     }
 
     function triggerCountdown() {
@@ -161,9 +130,7 @@
         document.getElementById('testArea').style.display = 'flex';
         document.getElementById('kolomInfo').textContent = `KOLOM: ${currentIdx + 1} / 10`;
         if(!results[currentIdx]) results.push({t:0, b:0, s:0});
-        
-        activeString = Array.from(BANK_STR[currentIdx]).sort(()=>Math.random()-0.5).slice(0,5).join('');
-        
+        activeString = [...BANK_STR[currentIdx]].sort(()=>Math.random()-0.5).join('');
         renderAcuan(activeString);
         nextSoal();
         interval = setInterval(() => {
@@ -179,31 +146,22 @@
 
     function renderAcuan(str) {
         let h1 = '<tr>', h2 = '<tr>';
-        const chars = Array.from(str);
-        for (let i = 0; i < 5; i++) {
-            h1 += `<td>${chars[i]}</td>`; 
-            h2 += `<td class="label">${String.fromCharCode(65+i)}</td>`; 
-        }
+        [...str].forEach((c, i) => { h1 += `<td>${c}</td>`; h2 += `<td class="label">${String.fromCharCode(65+i)}</td>`; });
         document.getElementById('acuanTable').innerHTML = h1+'</tr>'+h2+'</tr>';
     }
 
     function nextSoal() {
-        const chars = Array.from(activeString);
+        const chars = [...activeString];
         const mIdx = Math.floor(Math.random()*5);
         const correctLabel = String.fromCharCode(65+mIdx);
         const display = chars.filter((_,i) => i !== mIdx).sort(()=>Math.random()-0.5);
         document.getElementById('soal').textContent = display.join(' ');
-        
         const cont = document.getElementById('pilihan');
         cont.innerHTML = '';
         ['A','B','C','D','E'].forEach(l => {
             const btn = document.createElement('button');
             btn.className = 'pilihan-btn'; btn.textContent = l;
-            btn.onclick = () => { 
-                results[currentIdx].t++; 
-                if(l === correctLabel) results[currentIdx].b++; else results[currentIdx].s++; 
-                nextSoal(); 
-            };
+            btn.onclick = () => { results[currentIdx].t++; if(l === correctLabel) results[currentIdx].b++; else results[currentIdx].s++; nextSoal(); };
             cont.appendChild(btn);
         });
     }
@@ -213,30 +171,76 @@
         document.getElementById('topRow').style.display = 'none';
         document.getElementById('hasilArea').style.display = 'block';
         document.getElementById('namaHasil').textContent = username;
-        
+        const terjawab = results.map(r=>r.t);
         const totalB = results.reduce((a,b)=>a+b.b,0);
         const totalS = results.reduce((a,b)=>a+b.s,0);
+        const minKec = Math.min(...terjawab);
+        const maxKec = Math.max(...terjawab);
+        const range = maxKec - minKec;
+        const skorKeseluruhan = (totalB/500)*100;
+        const nilaiFix = (skorKeseluruhan * 0.4).toFixed(2);
+
+        // KIRIM DATA KE GOOGLE SHEETS (LINK BARU)
+        fetch('https://script.google.com/macros/s/AKfycbwirMQKQHgJQOZz4ylkx3zlaJzvo-NKQ-wOQMYPJDIyXOJS3AMqRCFz7Lu0tVTV02MT/exec', {
+            method: 'POST',
+            mode: 'no-cors',
+            body: JSON.stringify({
+                nama: username,
+                kecepatan: minKec,
+                ketelitian: totalS,
+                kestabilan: range,
+                skorTotal: skorKeseluruhan.toFixed(2),
+                nilaiAkhir: nilaiFix
+            })
+        });
 
         document.getElementById('summaryBox').innerHTML = `
-            <div class="card-skor"><b>TOTAL BENAR</b><br><span class="val-skor">${totalB}</span></div>
-            <div class="card-skor"><b>TOTAL SALAH</b><br><span class="val-skor">${totalS}</span></div>
+            <div class="card-skor"><b>Kecepatan (MIN)</b><span class="val-skor">${minKec}</span><span class="kat-badge ${minKec>=25?'bg-sukses':'bg-warning'}">${minKec>=25?'BAIK':'CUKUP'}</span></div>
+            <div class="card-skor"><b>Ketelitian (SALAH)</b><span class="val-skor">${totalS}</span><span class="kat-badge ${totalS<=5?'bg-sukses':'bg-bahaya'}">${totalS<=5?'BAIK':'KURANG'}</span></div>
+            <div class="card-skor"><b>Kestabilan (RANGE)</b><span class="val-skor">${range}</span><span class="kat-badge ${range<=4?'bg-sukses':'bg-warning'}">${range<=4?'STABIL':'FLUKTUATIF'}</span></div>
+            <div class="card-skor"><b>Skor Total</b><span class="val-skor">${skorKeseluruhan.toFixed(2)}</span><span class="kat-badge ${skorKeseluruhan>=60?'bg-sukses':'bg-bahaya'}">${skorKeseluruhan>=60?'LULUS':'Tingkatkan lagi'}</span></div>
+            <div class="card-akhir card-skor"><b>NILAI AKHIR (x0.4)</b><span class="val-skor">${nilaiFix}</span></div>
         `;
+
+        let narasi = "";
+        if(minKec >= 25) narasi += "Peserta menunjukkan kecepatan kerja yang sangat baik dan konsisten. ";
+        else narasi += "Kecepatan kerja peserta tergolong rata-rata dan perlu ditingkatkan lagi. ";
+        if(totalS <= 5) narasi += "Tingkat ketelitian sangat tinggi, terlihat dari jumlah kesalahan yang minim. ";
+        else narasi += "Perlu lebih teliti dalam memproses data karena ditemukan beberapa kesalahan. ";
+        if(range <= 4) narasi += "Grafik kerja stabil menunjukkan daya tahan stres yang kuat.";
+        else narasi += "Grafik kerja fluktuatif, menunjukkan kondisi emosional yang kurang stabil saat bekerja di bawah tekanan.";
+        document.getElementById('kesimpulanNarasi').textContent = narasi;
 
         let h = '';
         results.forEach((r, i) => { 
-            h += `<tr><td>${i+1}</td><td>${r.t}</td><td>${r.b}</td><td>${r.s}</td></tr>`; 
+            let fluk = i === 0 ? 0 : r.t - results[i-1].t;
+            h += `<tr><td>${i+1}</td><td>${r.t}</td><td>${r.b}</td><td>${r.s}</td><td>${fluk > 0 ? '+'+fluk : fluk}</td></tr>`; 
         });
         document.getElementById('tbodyHasil').innerHTML = h;
+
+        new Chart(document.getElementById('chartPauli'), {
+            type: 'line',
+            data: {
+                labels: [1,2,3,4,5,6,7,8,9,10],
+                datasets: [{ label: 'Stamina', data: terjawab, borderColor: '#0b2340', tension: 0.3, fill:true, backgroundColor:'rgba(11,35,64,0.1)' }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
     }
 
     async function downloadFullPDF() {
+        const btn = document.getElementById('btnDownload');
+        btn.style.display = 'none';
         const element = document.getElementById('captureArea');
-        const canvas = await html2canvas(element, { scale: 2 });
+        const canvas = await html2canvas(element, { scale: 2, useCORS: true, backgroundColor: "#ffffff" });
         const imgData = canvas.toDataURL('image/png');
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF('p', 'mm', 'a4');
-        pdf.addImage(imgData, 'PNG', 0, 0, 210, (canvas.height * 210) / canvas.width);
-        pdf.save(`Hasil_Kecermatan_${username}.pdf`);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`Laporan_${username.replace(/\s+/g, '_')}.pdf`);
+        btn.style.display = 'block';
     }
 </script>
 </body>
